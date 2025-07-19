@@ -106,7 +106,6 @@ LOCATION: australiaeast
 
 
 
-
 6. Deploy
 
 Push code to main:git add .
