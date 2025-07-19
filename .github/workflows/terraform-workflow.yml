@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - 'feature/*'   # Quotes required for glob pattern
+      - "feature/*"
     paths:
       - terraform/**
   pull_request:
