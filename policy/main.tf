@@ -5,11 +5,56 @@ terraform {
            version = "~>3.0"
          }
        }
-       backend "remote" {
-         organization = var.tf_organization
-         workspaces {
-           name = var.tf_policy_workspace
-         }
+       terraform { 
+  cloud { 
+    
+    organization = "felfun-spz-technologies-azure-platform" 
+
+    workspaces { 
+      name = "azure-policy-workspace" 
+    } 
+  } 
+}
+       terraform { 
+  cloud { 
+    
+    organization = "felfun-spz-technologies-azure-platform" 
+
+    workspaces { 
+      name = "azure-policy-workspace" 
+    } 
+  } 
+}
+       terraform { 
+  cloud { 
+    
+    organization = "felfun-spz-technologies-azure-platform" 
+
+    workspaces { 
+      name = "azure-policy-workspace" 
+    } 
+  } 
+}
+       terraform { 
+  cloud { 
+    
+    organization = "felfun-spz-technologies-azure-platform" 
+
+    workspaces { 
+      name = "azure-policy-workspace" 
+    } 
+  } 
+}
+       terraform { 
+  cloud { 
+    
+    organization = "felfun-spz-technologies-azure-platform" 
+
+    workspaces { 
+      name = "azure-policy-workspace" 
+    } 
+  } 
+}
        }
      }
 
