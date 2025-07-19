@@ -21,7 +21,7 @@ Generate an API token in User Settings > Tokens and store it securely.
 
 2. Azure Service Principal
 
-Log in to Azure CLI:az login
+Log in to Azure CLI: az login
 
 
 Get Subscription ID:az account show --query id --output tsv
