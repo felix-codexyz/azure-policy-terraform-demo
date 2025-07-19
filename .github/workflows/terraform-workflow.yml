@@ -3,12 +3,8 @@ name: Terraform Storage Deployment
 on:
   push:
     branches:
-      - feature/*
-    paths:
-      - terraform/**
-  push:
-    branches:
       - main
+      - 'feature/*'
     paths:
       - terraform/**
   pull_request:
