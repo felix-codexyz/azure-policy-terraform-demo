@@ -6,39 +6,48 @@ on:
       - feature/*
     paths:
       - terraform/**
+  push:
+    branches:
+      - main
+    paths:
+      - terraform/**
   pull_request:
     branches:
       - main
     paths:
       - terraform/**
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.5.7
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
       - name: Terraform Init
         working-directory: ./terraform
         run: terraform init
+
       - name: Terraform Plan
-        if: github.event_name == 'push'
+        if: startsWith(github.ref, 'refs/heads/feature/')
         working-directory: ./terraform
-        run: terraform plan -var="tf_organization=${{ vars.TF_ORGANIZATION }}"
-          -var="tf_storage_workspace=${{ vars.TF_STORAGE_WORKSPACE }}"
-          -var="resource_group_name=${{ vars.RESOURCE_GROUP_NAME }}"
-          -var="storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME }}"
+        run: terraform plan -var="tf_organization=${{ vars.TF_ORGANIZATION }}" \
+          -var="tf_storage_workspace=${{ vars.TF_STORAGE_WORKSPACE }}" \
+          -var="resource_group_name=${{ vars.RESOURCE_GROUP_NAME }}" \
+          -var="storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME }}" \
           -var="location=${{ vars.LOCATION }}"
+
       - name: Terraform Apply
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' &&
-          github.event.pull_request.merged == true
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         working-directory: ./terraform
-        run: terraform apply -auto-approve -var="tf_organization=${{
-          vars.TF_ORGANIZATION }}" -var="tf_storage_workspace=${{
-          vars.TF_STORAGE_WORKSPACE }}" -var="resource_group_name=${{
-          vars.RESOURCE_GROUP_NAME }}" -var="storage_account_name=${{
-          vars.STORAGE_ACCOUNT_NAME }}" -var="location=${{ vars.LOCATION }}"
+        run: terraform apply -auto-approve -var="tf_organization=${{ vars.TF_ORGANIZATION }}" \
+          -var="tf_storage_workspace=${{ vars.TF_STORAGE_WORKSPACE }}" \
+          -var="resource_group_name=${{ vars.RESOURCE_GROUP_NAME }}" \
+          -var="storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME }}" \
+          -var="location=${{ vars.LOCATION }}"
