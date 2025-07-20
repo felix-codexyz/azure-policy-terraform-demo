@@ -1,7 +1,9 @@
 name: Azure Policy Assignment
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - main
     paths:
@@ -9,6 +11,7 @@ on:
 
 jobs:
   apply-policy:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -26,8 +29,20 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ./policy
-        run: terraform plan -var="tf_organization=${{ vars.TF_ORGANIZATION }}" -var="tf_policy_workspace=${{ vars.TF_POLICY_WORKSPACE }}"
+        run: terraform plan -var="tf_organization=${{ vars.TF_ORGANIZATION }}" \
+          -var="tf_policy_workspace=${{ vars.TF_POLICY_WORKSPACE }}" \
+          -var="policy_name=${{ vars.POLICY_NAME }}" \
+          -var="policy_display_name=${{ vars.POLICY_DISPLAY_NAME }}" \
+          -var="policy_assignment_name=${{ vars.POLICY_ASSIGNMENT_NAME }}" \
+          -var="policy_assignment_description=${{ vars.POLICY_ASSIGNMENT_DESCRIPTION }}" \
+          -var="policy_assignment_display_name=${{ vars.POLICY_ASSIGNMENT_DISPLAY_NAME }}"
 
       - name: Terraform Apply
         working-directory: ./policy
-        run: terraform apply -auto-approve -var="tf_organization=${{ vars.TF_ORGANIZATION }}" -var="tf_policy_workspace=${{ vars.TF_POLICY_WORKSPACE }}"
+        run: terraform apply -auto-approve -var="tf_organization=${{ vars.TF_ORGANIZATION }}" \
+          -var="tf_policy_workspace=${{ vars.TF_POLICY_WORKSPACE }}" \
+          -var="policy_name=${{ vars.POLICY_NAME }}" \
+          -var="policy_display_name=${{ vars.POLICY_DISPLAY_NAME }}" \
+          -var="policy_assignment_name=${{ vars.POLICY_ASSIGNMENT_NAME }}" \
+          -var="policy_assignment_description=${{ vars.POLICY_ASSIGNMENT_DESCRIPTION }}" \
+          -var="policy_assignment_display_name=${{ vars.POLICY_ASSIGNMENT_DISPLAY_NAME }}"
