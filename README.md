@@ -104,7 +104,6 @@ STORAGE_ACCOUNT_NAME: demostorage<unique-suffix>
 LOCATION: australiaeast
 
 
-
 6. Deploy
 
 Push code to main:git add .
