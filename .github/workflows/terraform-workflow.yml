@@ -1,21 +1,22 @@
----
 name: Terraform Storage Deployment
+
 on:
   push:
     branches:
       - main
       - "feature/*"
     paths:
-      - terraform/**
+      - 'terraform/**'
   pull_request:
     branches:
       - main
     paths:
-      - terraform/**
+      - 'terraform/**'
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,17 +34,21 @@ jobs:
       - name: Terraform Plan
         if: startsWith(github.ref, 'refs/heads/feature/')
         working-directory: ./terraform
-        run: terraform plan -var="tf_organization=${{ vars.TF_ORGANIZATION }}" \
-          -var="tf_storage_workspace=${{ vars.TF_STORAGE_WORKSPACE }}" \
-          -var="resource_group_name=${{ vars.RESOURCE_GROUP_NAME }}" \
-          -var="storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME }}" \
-          -var="location=${{ vars.LOCATION }}"
+        run: |
+          terraform plan \
+            -var="tf_organization=${{ vars.TF_ORGANIZATION }}" \
+            -var="tf_storage_workspace=${{ vars.TF_STORAGE_WORKSPACE }}" \
+            -var="resource_group_name=${{ vars.RESOURCE_GROUP_NAME }}" \
+            -var="storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME }}" \
+            -var="location=${{ vars.LOCATION }}"
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         working-directory: ./terraform
-        run: terraform apply -auto-approve -var="tf_organization=${{ vars.TF_ORGANIZATION }}" \
-          -var="tf_storage_workspace=${{ vars.TF_STORAGE_WORKSPACE }}" \
-          -var="resource_group_name=${{ vars.RESOURCE_GROUP_NAME }}" \
-          -var="storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME }}" \
-          -var="location=${{ vars.LOCATION }}"
+        run: |
+          terraform apply -auto-approve \
+            -var="tf_organization=${{ vars.TF_ORGANIZATION }}" \
+            -var="tf_storage_workspace=${{ vars.TF_STORAGE_WORKSPACE }}" \
+            -var="resource_group_name=${{ vars.RESOURCE_GROUP_NAME }}" \
+            -var="storage_account_name=${{ vars.STORAGE_ACCOUNT_NAME }}" \
+            -var="location=${{ vars.LOCATION }}"
