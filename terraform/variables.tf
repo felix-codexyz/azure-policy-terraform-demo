@@ -8,6 +8,11 @@ variable "tf_organization" {
        type        = string
      }
 
+     variable "tf_policy_workspace" {
+       description = "The name of the Terraform Cloud workspace for policies"
+       type        = string
+    }    
+
      variable "resource_group_name" {
        description = "Name of the resource group"
        type        = string
