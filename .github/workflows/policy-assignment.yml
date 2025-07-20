@@ -35,7 +35,6 @@ jobs:
         run: |
           terraform plan \
             -var="tf_organization=${{ vars.TF_ORGANIZATION }}" \
-            -var="tf_policy_workspace=${{ vars.TF_POLICY_WORKSPACE }}" \
             -var="policy_name=${{ vars.POLICY_NAME }}" \
             -var="policy_display_name=${{ vars.POLICY_DISPLAY_NAME }}" \
             -var="policy_assignment_name=${{ vars.POLICY_ASSIGNMENT_NAME }}" \
