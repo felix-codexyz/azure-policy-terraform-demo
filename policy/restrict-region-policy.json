@@ -1,6 +1,6 @@
 {
        "properties": {
-         "displayName": "Restrict Resource Location to East US",
+         "displayName": "Restrict Resource Location to EastUS",
          "description": "This policy restricts resource deployment to East US region only.",
          "mode": "All",
          "parameters": {},
