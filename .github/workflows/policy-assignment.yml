@@ -6,14 +6,9 @@ on:
       - main
     paths:
       - 'policy/**'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'policy/**'
 
 jobs:
-  validate-and-assign-policy:
+  apply-policy:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,24 +27,9 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ./policy
-        run: |
-          terraform plan \
-            -var="tf_organization=${{ vars.TF_ORGANIZATION }}" \
-            -var="policy_name=${{ vars.POLICY_NAME }}" \
-            -var="policy_display_name=${{ vars.POLICY_DISPLAY_NAME }}" \
-            -var="policy_assignment_name=${{ vars.POLICY_ASSIGNMENT_NAME }}" \
-            -var="policy_assignment_description=${{ vars.POLICY_ASSIGNMENT_DESCRIPTION }}" \
-            -var="policy_assignment_display_name=${{ vars.POLICY_ASSIGNMENT_DISPLAY_NAME }}"
+        run: terraform plan -var="tf_organization=${{ vars.TF_ORGANIZATION }}" -var="tf_policy_workspace=${{ vars.TF_POLICY_WORKSPACE }}"
 
       - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: ./policy
-        run: |
-          terraform apply -auto-approve \
-            -var="tf_organization=${{ vars.TF_ORGANIZATION }}" \
-            -var="tf_policy_workspace=${{ vars.TF_POLICY_WORKSPACE }}" \
-            -var="policy_name=${{ vars.POLICY_NAME }}" \
-            -var="policy_display_name=${{ vars.POLICY_DISPLAY_NAME }}" \
-            -var="policy_assignment_name=${{ vars.POLICY_ASSIGNMENT_NAME }}" \
-            -var="policy_assignment_description=${{ vars.POLICY_ASSIGNMENT_DESCRIPTION }}" \
-            -var="policy_assignment_display_name=${{ vars.POLICY_ASSIGNMENT_DISPLAY_NAME }}"
+        run: terraform apply -auto-approve -var="tf_organization=${{ vars.TF_ORGANIZATION }}" -var="tf_policy_workspace=${{ vars.TF_POLICY_WORKSPACE }}"
