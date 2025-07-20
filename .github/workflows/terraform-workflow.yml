@@ -3,9 +3,10 @@ name: Terraform Storage Deployment
 on:
   push:
     branches:
-      - '**'
+      - main
+      - feature/**         # ✅ Fix: this works
     paths:
-      - 'terraform/**'
+      - 'terraform/**'     # ✅ Only run if terraform files are modified
   pull_request:
     branches:
       - main
@@ -31,7 +32,7 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        if: github.ref != 'refs/heads/main'
+        if: github.ref != 'refs/heads/main'   # ✅ Only runs on feature branches
         working-directory: ./terraform
         run: |
           terraform plan \
